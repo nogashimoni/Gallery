@@ -3,50 +3,54 @@
  */
 
 import {Component, Input} from 'angular2/core'
-import {PaginationComponent} from "./pagination.component";
-import {GalleryService} from "./gallery.service";
+import {GetPicturesService} from "./get-pictures.service";
+import {PagerService} from "./pager.service";
+import {Picture} from "./picture";
 
 @Component({
     selector: 'gallery',
-    template: `
-    <h2> Noga's Gallery </h2>
-    <h1> feed url: {{ feedUrl }} </h1>
-    <h1> search: {{ searchInput }} </h1>
-    <h1> pagination: {{ paginationInput }} </h1>
-    <h1> results per page: {{ resultsPerPageInput }} </h1>
-    <h1> sorting input: {{ sortingInput }} </h1>
-    <h1> rotate time input: {{ rotateTimeInput }} </h1>
-    <pagination [pictures] =  pictures > </pagination>
-
-    `,
-    inputs: ['feedUrl', 'searchInput', 'paginationInput', 'resultsPerPageInput', 'sortingInput', 'rotateTimeInput'],
-    directives: [PaginationComponent],
-    providers: [GalleryService]
+    templateUrl: './app/gallery.component.html',
+    inputs: ['feedUrl', 'isSearchable', 'isPaginationEnabled', 'resultsPerPage', 'isSortable', 'rotateTime'],
+    //directives: [PicturesComponent],
+    providers: [GetPicturesService, PagerService]
 })
 
 export class GalleryComponent {
 
-    searchInput = true;
-    paginationInput = true;
-    resultsPerPageInput = 10;
-    sortingInput = true;
-    rotateTimeInput = 4;
-    feedUrl;
-    pictures;
+    feedUrl: string;
+    isSearchable: boolean = true;
+    isPaginationEnabled: boolean = true;
+    resultsPerPage: number = 10;
+    isSortable: boolean = true;
+    rotateTime: number = 4;
 
-    constructor (galleryService: GalleryService) {
+    pictures: Picture[];
+    pager: any = {};
+    picturesOnPage: Picture[];
 
-        //galleryService.getFeedFromUrl(this.feedUrl).subscribe( res => this.feed = res);
-        this.pictures = galleryService.getPictures(this.feedUrl);
+    constructor (getPicturesService: GetPicturesService, private pagerService: PagerService) {
+        //getPicturesService.getFeedFromUrl(this.feedUrl).subscribe( res => this.feed = res);
+        this.pictures = getPicturesService.getPictures(this.feedUrl);
     }
 
 
+    ngOnInit() {
+        if (!this.isPaginationEnabled) {this.resultsPerPage=this.pictures.length}
+        this.setPage(1);
+    }
+
+    setPage(page: number) {
+
+        if (page < 1 || page > this.pager.totalPages) {
+            return;
+        }
+
+        // get pager object from service
+        this.pager = this.pagerService.getPager(this.pictures.length, page, this.resultsPerPage);
+
+        // get current page of items
+        this.picturesOnPage = this.pictures.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    }
 
 
-    //feed (String/Array) - path to load the json from / array of images
-    //search (Boolean default:true) - show a search box
-    //pagination (Boolean default true) - show a pagination component in the gallery.
-    //results-per-page (Number, default 10) - number of results on each page of the gallery
-    //sorting (Boolean default true) - allow the user to sort by the images elements (title, date)
-    //auto-rotate-time (Number default 4) - Time for image slideshow mode
 }

@@ -7,7 +7,7 @@ import {Picture} from "./picture";
  */
 
 @Injectable()
-export class GalleryService {
+export class GetPicturesService {
 
     constructor(private _http:Http) {
     }

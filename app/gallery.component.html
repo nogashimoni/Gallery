@@ -1,0 +1,46 @@
+<!-- bootstrap css -->
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+
+<!-- gallery css -->
+<link href="gallery.css" rel="stylesheet" />
+
+<div>
+    <div>
+        <h5> feed url: {{ feedUrl }} </h5>
+        <h5> search: {{ isSearchable }} </h5>
+        <h5> pagination: {{ isPaginationEnabled }} </h5>
+        <h5> results per page: {{ resultsPerPage }} </h5>
+        <h5> sorting input: {{ isSortable }} </h5>
+        <h5> rotate time input: {{ rotateTime }} </h5>
+    </div>
+
+    <div class="container">
+        <div class="text-center">
+
+            <!-- items being paged -->
+            <div *ngFor=" #picture of picturesOnPage"> <img src= "{{ picture.url }}" width="400" height="200"></div>
+
+            <!-- pager -->
+            <div *ngIf="isPaginationEnabled">
+                <ul *ngIf="pager.pages.length" class="pagination">
+                        <li [ngClass]="{disabled:pager.currentPage === 1}">
+                            <a (click)="setPage(1)">First</a>
+                        </li>
+                        <li [ngClass]="{disabled:pager.currentPage === 1}">
+                            <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+                        </li>
+                        <li *ngFor="#page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                            <a (click)="setPage(page)">{{page}}</a>
+                        </li>
+                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                            <a (click)="setPage(pager.currentPage + 1)">Next</a>
+                        </li>
+                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                            <a (click)="setPage(pager.totalPages)">Last</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
