@@ -4,7 +4,7 @@ import {GalleryComponent} from './gallery.component'
 @Component({
     selector: 'my-app',
     template: `<gallery
-    feed = "https://s3.amazonaws.com/yotpo-public/images.json"
+    feedUrl = "https://s3.amazonaws.com/yotpo-public/images.json"
     searchInput = true
     paginationInput = true
     resultsPerPageInput = 4

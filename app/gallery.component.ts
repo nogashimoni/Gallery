@@ -3,23 +3,24 @@
  */
 
 import {Component, Input} from 'angular2/core'
-import {PageComponent} from "./page.component";
+import {PaginationComponent} from "./pagination.component";
 import {GalleryService} from "./gallery.service";
 
 @Component({
     selector: 'gallery',
-    template: `<h2> Noga's Gallery </h2>
+    template: `
+    <h2> Noga's Gallery </h2>
     <h1> feed url: {{ feedUrl }} </h1>
     <h1> search: {{ searchInput }} </h1>
     <h1> pagination: {{ paginationInput }} </h1>
     <h1> results per page: {{ resultsPerPageInput }} </h1>
     <h1> sorting input: {{ sortingInput }} </h1>
     <h1> rotate time input: {{ rotateTimeInput }} </h1>
-    <page [feed] =  feed > </page>
+    <pagination [pictures] =  pictures > </pagination>
 
     `,
     inputs: ['feedUrl', 'searchInput', 'paginationInput', 'resultsPerPageInput', 'sortingInput', 'rotateTimeInput'],
-    directives: [PageComponent],
+    directives: [PaginationComponent],
     providers: [GalleryService]
 })
 
@@ -30,10 +31,13 @@ export class GalleryComponent {
     resultsPerPageInput = 10;
     sortingInput = true;
     rotateTimeInput = 4;
-    feed;
+    feedUrl;
+    pictures;
 
     constructor (galleryService: GalleryService) {
-        this.feed = galleryService.getFeed();
+
+        //galleryService.getFeedFromUrl(this.feedUrl).subscribe( res => this.feed = res);
+        this.pictures = galleryService.getPictures(this.feedUrl);
     }
 
 
