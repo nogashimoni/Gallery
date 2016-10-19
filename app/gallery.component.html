@@ -14,12 +14,13 @@
         <h5> rotate time input: {{ rotateTime }} </h5>
     </div>
 
-    <div class="container">
-        <div class="text-center">
-
-            <!-- items being paged -->
+    <div class="gallery">
+        <!-- items being paged -->
+        <div id="pictures-center">
             <div *ngFor=" #picture of picturesOnPage"> <img src= "{{ picture.url }}" width="400" height="200"></div>
+        </div>
 
+        <div class="text-center">
             <!-- pager -->
             <div *ngIf="isPaginationEnabled">
                 <ul *ngIf="pager.pages.length" class="pagination">
