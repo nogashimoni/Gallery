@@ -15,13 +15,13 @@
     </div>
 
     <div class="gallery">
-        <!-- items being paged -->
+        <!-- present pictures -->
         <div id="pictures-center">
-            <div *ngFor=" #picture of picturesOnPage"> <img src= "{{ picture.url }}" width="400" height="200"></div>
+            <div *ngFor=" #picture of picturesToPresent"> <img src= "{{ picture.url }}" width="400" height="200"></div>
         </div>
 
+        <!-- pager -->
         <div class="text-center">
-            <!-- pager -->
             <div *ngIf="isPaginationEnabled">
                 <ul *ngIf="pager.pages.length" class="pagination">
                         <li [ngClass]="{disabled:pager.currentPage === 1}">

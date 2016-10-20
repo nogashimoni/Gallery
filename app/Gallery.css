@@ -1,10 +1,11 @@
-
-/* Pagination design */
-a {
-    cursor: pointer;
+/*All gallery design*/
+div.gallery {
+    width:85%;
+    border: 5px solid;
 }
 
 
+/* pictures design */
 img {
      margin: 5px;
      border: 1px solid #ccc;
@@ -24,4 +25,15 @@ img img {
 desc {
     padding: 15px;
     text-align: center;
+}
+
+
+
+#pictures-center {
+    /*TODO center pictures*/
+}
+
+/* Pagination design */
+a {
+    cursor: pointer;
 }

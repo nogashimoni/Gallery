@@ -11,12 +11,12 @@ import {Picture} from "./picture";
     selector: 'gallery',
     templateUrl: './app/gallery.component.html',
     inputs: ['feedUrl', 'isSearchable', 'isPaginationEnabled', 'resultsPerPage', 'isSortable', 'rotateTime'],
-    //directives: [PicturesComponent],
     providers: [GetPicturesService, PagerService]
 })
 
 export class GalleryComponent {
 
+    // Input variables
     feedUrl: string;
     isSearchable: boolean = true;
     isPaginationEnabled: boolean = true;
@@ -25,8 +25,11 @@ export class GalleryComponent {
     rotateTime: number = 4;
 
     pictures: Picture[];
+    picturesToPresent: Picture[];
+
+    // Paging variables
     pager: any = {};
-    picturesOnPage: Picture[];
+    currentPage: number = 1;
 
     constructor (getPicturesService: GetPicturesService, private pagerService: PagerService) {
         //getPicturesService.getFeedFromUrl(this.feedUrl).subscribe( res => this.feed = res);
@@ -35,22 +38,42 @@ export class GalleryComponent {
 
 
     ngOnInit() {
-        if (!this.isPaginationEnabled) {this.resultsPerPage=this.pictures.length}
-        this.setPage(1);
+        this.setPicturesToPresent();
     }
 
-    setPage(page: number) {
 
-        if (page < 1 || page > this.pager.totalPages) {
+    setPicturesToPresent() {
+        if (this.isPaginationEnabled) {
+            this.setPage(this.currentPage);
+        } else {
+            this.picturesToPresent = this.pictures;
+        }
+    }
+
+    setPage(pageNumber: number) {
+        this.currentPage = pageNumber;
+        if (pageNumber < 1 || pageNumber > this.pager.totalPages) {
             return;
         }
-
-        // get pager object from service
-        this.pager = this.pagerService.getPager(this.pictures.length, page, this.resultsPerPage);
-
-        // get current page of items
-        this.picturesOnPage = this.pictures.slice(this.pager.startIndex, this.pager.endIndex + 1);
+        this.pager = this.pagerService.getPager(this.pictures.length, pageNumber, this.resultsPerPage);
+        this.picturesToPresent = this.pictures.slice(this.pager.startIndex, this.pager.endIndex + 1);
     }
 
+
+    //search(input: string) {
+    //    if (input != "") {
+    //        this.setPicturesToPresent();
+    //        return;
+    //    }
+    //
+    //    let searchResult: Picture[] = [];
+    //
+    //    for ( let picture: Picture in this.pictures ) {
+    //        if ( input in picture.title ) {
+    //            searchResult.push(picture);
+    //        }
+    //    }
+    //    this.picturesToPresent = searchResult;
+    //}
 
 }
