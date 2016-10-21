@@ -14,10 +14,17 @@
         <h5> rotate time input: {{ rotateTime }} </h5>
     </div>
 
+    <div *ngIf="isSearchable">
+        <search-box (update)="performSearch($event)"></search-box>
+    </div>
+
     <div class="gallery">
         <!-- present pictures -->
         <div id="pictures-center">
-            <div *ngFor=" #picture of picturesToPresent"> <img src= "{{ picture.url }}" width="400" height="200"></div>
+            <div *ngFor=" #picture of picturesToPresent">
+                <img src= "{{ picture.url }}" width="400" height="200">
+                {{picture.title}}
+            </div>
         </div>
 
         <!-- pager -->

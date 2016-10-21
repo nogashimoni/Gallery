@@ -6,12 +6,14 @@ import {Component, Input} from 'angular2/core'
 import {GetPicturesService} from "./get-pictures.service";
 import {PagerService} from "./pager.service";
 import {Picture} from "./picture";
+import {SearchBox} from "./search-box.component";
 
 @Component({
     selector: 'gallery',
     templateUrl: './app/gallery.component.html',
     inputs: ['feedUrl', 'isSearchable', 'isPaginationEnabled', 'resultsPerPage', 'isSortable', 'rotateTime'],
-    providers: [GetPicturesService, PagerService]
+    providers: [GetPicturesService, PagerService],
+    directives: [SearchBox],
 })
 
 export class GalleryComponent {
@@ -31,9 +33,13 @@ export class GalleryComponent {
     pager: any = {};
     currentPage: number = 1;
 
+    // Search variables
+    relevantPictures: Picture[];
+
     constructor (getPicturesService: GetPicturesService, private pagerService: PagerService) {
         //getPicturesService.getFeedFromUrl(this.feedUrl).subscribe( res => this.feed = res);
         this.pictures = getPicturesService.getPictures(this.feedUrl);
+        this.relevantPictures = this.pictures.slice(0); // copy pictures array
     }
 
 
@@ -43,37 +49,45 @@ export class GalleryComponent {
 
 
     setPicturesToPresent() {
+        if (this.relevantPictures.length == 0) {
+            this.picturesToPresent = [];
+            return;
+        }
         if (this.isPaginationEnabled) {
             this.setPage(this.currentPage);
         } else {
-            this.picturesToPresent = this.pictures;
+            this.picturesToPresent = this.relevantPictures.slice(0);
         }
     }
 
     setPage(pageNumber: number) {
         this.currentPage = pageNumber;
+        this.pager = this.pagerService.getPager(this.relevantPictures.length, pageNumber, this.resultsPerPage);
+
         if (pageNumber < 1 || pageNumber > this.pager.totalPages) {
             return;
         }
-        this.pager = this.pagerService.getPager(this.pictures.length, pageNumber, this.resultsPerPage);
-        this.picturesToPresent = this.pictures.slice(this.pager.startIndex, this.pager.endIndex + 1);
+        this.picturesToPresent = this.relevantPictures.slice(this.pager.startIndex, this.pager.endIndex + 1);
     }
 
+    performSearch(searchTerm: string) {
+        if (!searchTerm) {
+            this.relevantPictures = this.pictures.slice(0) //copy pictures array;
 
-    //search(input: string) {
-    //    if (input != "") {
-    //        this.setPicturesToPresent();
-    //        return;
-    //    }
-    //
-    //    let searchResult: Picture[] = [];
-    //
-    //    for ( let picture: Picture in this.pictures ) {
-    //        if ( input in picture.title ) {
-    //            searchResult.push(picture);
-    //        }
-    //    }
-    //    this.picturesToPresent = searchResult;
-    //}
+        } else {
+
+            this.relevantPictures = [];
+
+            for (var picture of this.pictures) {
+                if (picture.title.startsWith(searchTerm)) {
+                    this.relevantPictures.push(picture);
+                }
+            }
+        }
+
+        this.setPicturesToPresent();
+
+    }
+
 
 }
