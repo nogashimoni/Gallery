@@ -1,7 +1,7 @@
 export interface Picture {
         title: string;
         url: string;
-        date: string;
+        date: Date;
         id: number;
 }
 

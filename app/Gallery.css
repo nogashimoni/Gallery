@@ -6,32 +6,34 @@ div.gallery {
 
 
 /* pictures design */
-img {
-     margin: 5px;
-     border: 1px solid #ccc;
-     float: left;
-     width: 180px;
+div.img {
+    margin: 5px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 180px;
 }
 
-img:hover {
+div.img:hover {
     border: 1px solid #777;
 }
 
-img img {
+div.img img {
     width: 100%;
     height: auto;
 }
 
-desc {
+div.description {
     padding: 15px;
     text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow:hidden;
 }
 
-
-
-#pictures-center {
-    /*TODO center pictures*/
+div.description:hover {
+    overflow: visible;
 }
+
 
 /* Pagination design */
 a {

@@ -15,7 +15,7 @@ import {GalleryComponent} from './gallery.component'
 export class AppComponent {
 
     isSearchable: boolean = true;
-    isPaginationEnabled: boolean = false;
+    isPaginationEnabled: boolean = true;
     resultsPerPage: number = 4;
     rotateTime: number = 2;
 

@@ -4,11 +4,11 @@
 import {Component, Output, EventEmitter} from "angular2/core";
 
 @Component({
+    selector: "search-box",
     template:  `<div id="search-component">
                     <input #input type = "text" (input)="update.emit(input.value)" />
                 </div>
                 `,
-    selector: "search-box",
     outputs: ['update']
 })
 export class SearchBox {

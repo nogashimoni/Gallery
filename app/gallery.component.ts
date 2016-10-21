@@ -7,13 +7,14 @@ import {GetPicturesService} from "./get-pictures.service";
 import {PagerService} from "./pager.service";
 import {Picture} from "./picture";
 import {SearchBox} from "./search-box.component";
+import {DropDown} from "./dropdown.component";
 
 @Component({
     selector: 'gallery',
     templateUrl: './app/gallery.component.html',
     inputs: ['feedUrl', 'isSearchable', 'isPaginationEnabled', 'resultsPerPage', 'isSortable', 'rotateTime'],
     providers: [GetPicturesService, PagerService],
-    directives: [SearchBox],
+    directives: [SearchBox, DropDown],
 })
 
 export class GalleryComponent {
@@ -28,13 +29,17 @@ export class GalleryComponent {
 
     pictures: Picture[];
     picturesToPresent: Picture[];
+    relevantPictures: Picture[]; // pictures relevant to search and sort
 
     // Paging variables
     pager: any = {};
     currentPage: number = 1;
 
     // Search variables
-    relevantPictures: Picture[];
+    searchTerm: string = "";
+
+    // Sort variables
+    sortProperty: string = "";
 
     constructor (getPicturesService: GetPicturesService, private pagerService: PagerService) {
         //getPicturesService.getFeedFromUrl(this.feedUrl).subscribe( res => this.feed = res);
@@ -53,41 +58,101 @@ export class GalleryComponent {
             this.picturesToPresent = [];
             return;
         }
+
         if (this.isPaginationEnabled) {
-            this.setPage(this.currentPage);
+            this.picturesToPresent = this.calculateCurrentPage();
         } else {
             this.picturesToPresent = this.relevantPictures.slice(0);
         }
     }
 
-    setPage(pageNumber: number) {
-        this.currentPage = pageNumber;
-        this.pager = this.pagerService.getPager(this.relevantPictures.length, pageNumber, this.resultsPerPage);
-
-        if (pageNumber < 1 || pageNumber > this.pager.totalPages) {
-            return;
+    private updateRelevantData() {
+        if (this.isSearchable && this.searchTerm != "") {
+            this.relevantPictures = this.searchPictures();
         }
-        this.picturesToPresent = this.relevantPictures.slice(this.pager.startIndex, this.pager.endIndex + 1);
-    }
 
-    performSearch(searchTerm: string) {
-        if (!searchTerm) {
-            this.relevantPictures = this.pictures.slice(0) //copy pictures array;
-
-        } else {
-
-            this.relevantPictures = [];
-
-            for (var picture of this.pictures) {
-                if (picture.title.startsWith(searchTerm)) {
-                    this.relevantPictures.push(picture);
-                }
-            }
+        if (this.isSortable && this.sortProperty != "") {
+            this.sortRelevantPictures();
         }
 
         this.setPicturesToPresent();
+    };
+
+
+    setPage(pageNumber: number) {
+        this.currentPage = pageNumber;
+        this.picturesToPresent = this.calculateCurrentPage();
     }
 
 
+    calculateCurrentPage() {
+        this.pager = this.pagerService.getPager(this.relevantPictures.length, this.currentPage, this.resultsPerPage);
+
+        if (this.currentPage < 1 || this.currentPage > this.pager.totalPages) {
+            return;
+        }
+        return this.relevantPictures.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    }
+
+
+    performSearch(searchTerm: string) {
+        this.searchTerm = searchTerm;
+        if (this.searchTerm == "") {
+            this.relevantPictures = this.pictures.slice(0) //copy pictures array;
+        }
+        this.currentPage = 1;
+        this.updateRelevantData();
+    }
+
+
+    searchPictures(): Picture[] {
+        let result: Picture[] = [];
+        for (var picture of this.pictures) {
+            if (picture.title.startsWith(this.searchTerm)) {
+                result.push(picture);
+            }
+        }
+        return result;
+    }
+
+
+    performSort(sortProperty: string) {
+        this.sortProperty = sortProperty;
+        if (this.sortProperty == "") {
+            this.relevantPictures = this.pictures.slice(0);
+        }
+        this.updateRelevantData();
+    }
+
+
+    sortRelevantPictures() {
+        var x = this;
+
+        this.relevantPictures.sort(
+            function(picture1, picture2) {
+                var compare1, compare2 : any;
+                if (x.sortProperty.localeCompare("date") == 0) {
+                    compare1 = picture1.date;
+                    compare2 = picture2.date;
+                } else if (x.sortProperty.localeCompare("id") == 0 ) {
+                    compare1 = picture1.id;
+                    compare2 = picture2.id;
+                } else if (x.sortProperty.localeCompare("title") == 0 ) {
+                    compare1 = picture1.title;
+                    compare2 = picture2.title;
+                } else if (x.sortProperty.localeCompare("url") == 0 ) {
+                    compare1 = picture1.url;
+                    compare2 = picture2.url;
+                }
+
+                if (compare1 == compare2) {
+                    return 0;
+                } else if (compare1 < compare2) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            })
+    }
 
 }

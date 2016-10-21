@@ -18,6 +18,11 @@
         <search-box (update)="performSearch($event)"></search-box>
     </div>
 
+
+    <div *ngIf="isSortable">
+        <drop-down [options]="['title', 'url', 'date', 'id']" title="sort by" (update)="performSort($event)" ></drop-down>
+    </div>
+
     <div class="gallery">
         <!-- present pictures -->
         <div>
