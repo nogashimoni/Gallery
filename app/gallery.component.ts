@@ -86,8 +86,8 @@ export class GalleryComponent {
         }
 
         this.setPicturesToPresent();
-
     }
+
 
 
 }

@@ -20,10 +20,10 @@
 
     <div class="gallery">
         <!-- present pictures -->
-        <div id="pictures-center">
-            <div *ngFor=" #picture of picturesToPresent">
-                <img src= "{{ picture.url }}" width="400" height="200">
-                {{picture.title}}
+        <div>
+            <div class="img" *ngFor=" #picture of picturesToPresent">
+                <img src= "{{ picture.url }}" onerror="this.src='./app/assets/images/placeholder.png'" width="100" height="100">
+                <div class="description"> {{picture.title}} </div>
             </div>
         </div>
 
