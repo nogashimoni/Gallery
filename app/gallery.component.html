@@ -20,8 +20,12 @@
 
 
     <div *ngIf="isSortable">
-        <drop-down [options]="['title', 'url', 'date', 'id']" title="sort by" (update)="performSort($event)" ></drop-down>
+        <drop-down [options]="['title', 'url', 'date', 'id']" title="sort by:" (update)="performSort($event)"></drop-down>
     </div>
+
+    <dic *ngIf="isPaginationEnabled">
+        <drop-down [options]="calacResultsPerPageOptions()" title="results in a page:" [defaultOptionText]="defaultResultsPerPage" (update)="performChangeResultsPerPage($event)" ></drop-down>
+    </dic>
 
     <div class="gallery">
         <!-- present pictures -->

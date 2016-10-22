@@ -7,7 +7,7 @@ import {GalleryComponent} from './gallery.component'
     feedUrl = "https://s3.amazonaws.com/yotpo-public/images.json"
     [isSearchable] = isSearchable
     [isPaginationEnabled] = isPaginationEnabled
-    [resultsPerPage] = resultsPerPage
+    [defaultResultsPerPage] = resultsPerPage
     [rotateTime] = rotateTime
     ></gallery>`,
     directives: [GalleryComponent]

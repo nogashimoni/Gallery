@@ -12,7 +12,7 @@ import {DropDown} from "./dropdown.component";
 @Component({
     selector: 'gallery',
     templateUrl: './app/gallery.component.html',
-    inputs: ['feedUrl', 'isSearchable', 'isPaginationEnabled', 'resultsPerPage', 'isSortable', 'rotateTime'],
+    inputs: ['feedUrl', 'isSearchable', 'isPaginationEnabled', 'defaultResultsPerPage', 'isSortable', 'rotateTime'],
     providers: [GetPicturesService, PagerService],
     directives: [SearchBox, DropDown],
 })
@@ -23,8 +23,10 @@ export class GalleryComponent {
     feedUrl: string;
     isSearchable: boolean = true;
     isPaginationEnabled: boolean = true;
-    resultsPerPage: number = 10;
     isSortable: boolean = true;
+
+    defaultResultsPerPage: number = 10;
+    resultsPerPage: number = this.defaultResultsPerPage;
     rotateTime: number = 4;
 
     pictures: Picture[];
@@ -100,7 +102,7 @@ export class GalleryComponent {
         if (this.searchTerm == "") {
             this.relevantPictures = this.pictures.slice(0) //copy pictures array;
         }
-        this.currentPage = 1;
+        this.currentPage = 1; // in any case, after changing this field, move to first page.
         this.updateRelevantData();
     }
 
@@ -113,6 +115,30 @@ export class GalleryComponent {
             }
         }
         return result;
+    }
+
+
+    performChangeResultsPerPage(resultsPerPage: string) {
+        if (resultsPerPage == "") {
+            this.resultsPerPage = this.defaultResultsPerPage;
+        } else {
+            this.resultsPerPage = parseInt(resultsPerPage);
+        }
+        this.setPage(1);
+    }
+
+
+    calacResultsPerPageOptions(): number[] {
+        let allOptions = [5, 10, 15, 20];
+        let relevantOptions = [];
+
+        for (var i=0; i<allOptions.length; i++) {
+            var currentOptionIsRelevant:boolean = (this.relevantPictures.length >= allOptions[i])
+            if (currentOptionIsRelevant) {
+                relevantOptions.push(allOptions[i]);
+            }
+        }
+        return relevantOptions;
     }
 
 
