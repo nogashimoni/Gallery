@@ -17,19 +17,19 @@
     <div class="gallery">
 
         <div *ngIf="isSearchable">
-            <search-box (update)="performSearch($event)"></search-box>
+            <search-box (update)="performSearch($event)" [disabled]="isModalShown"></search-box>
         </div>
 
         <div *ngIf="isSortable">
-            <drop-down [options]="['title', 'date']" title="sort by:" (update)="performSort($event)"></drop-down>
+            <drop-down [options]="['title', 'date']" title="sort by:" (update)="performSort($event)" [disabled]="isModalShown"></drop-down>
         </div>
 
         <div *ngIf="isPaginationEnabled">
-            <drop-down [options]="calacResultsPerPageOptions()" title="results in a page:" [defaultOptionText]="defaultResultsPerPage" (update)="performChangeResultsPerPage($event)" ></drop-down>
+            <drop-down [options]="calacResultsPerPageOptions()" title="results in a page:" [defaultOptionText]="defaultResultsPerPage" (update)="performChangeResultsPerPage($event)" [disabled]="isModalShown"></drop-down>
         </div>
 
         <div>
-            <button (click)="showSlideShow()"> Slide Show </button>
+            <button (click)="showSlideShow()" [disabled] = "isModalShown" > Slide Show </button>
         </div>
 
 
@@ -44,10 +44,11 @@
         </div>
 
 
+
         <!-- present pictures -->
         <div>
             <div class="img" *ngFor=" #picture of picturesToPresent">
-                <img src= "{{ picture.url }}" onerror="this.src='./app/assets/images/placeholder.png'" (click)="showBigImage()" width="100" height="100">
+                <img src= "{{ picture.url }}" onerror="this.src='./app/assets/images/placeholder.png'" (click)="showBigImage()"  width="100" height="100">
                 <div class="description"> {{picture.title}} </div>
             </div>
         </div>
@@ -57,19 +58,19 @@
             <div *ngIf="isPaginationEnabled">
                 <ul *ngIf="pager.pages.length" class="pagination">
                         <li [ngClass]="{disabled: pager.currentPage == 1}">
-                            <a (click)="pager.currentPage != 1 && performSetPage(1)">First</a>
+                            <a (click)="pager.currentPage != 1 && !isModalShown && performSetPage(1)" >First</a>
                         </li>
                         <li [ngClass]="{disabled: pager.currentPage == 1}">
-                            <a (click)="pager.currentPage != 1 && performSetPage(pager.currentPage - 1)">Previous</a>
+                            <a (click)="pager.currentPage != 1 && !isModalShown && performSetPage(pager.currentPage - 1)">Previous</a>
                         </li>
                         <li *ngFor="#page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-                            <a (click)="performSetPage(page)">{{page}}</a>
+                            <a (click)="!isModalShown && performSetPage(page)">{{page}}</a>
                         </li>
                         <li [ngClass]="{disabled: pager.currentPage == pager.totalPages}">
-                            <a (click)="pager.currentPage != pager.totalPages && performSetPage(pager.currentPage + 1)">Next</a>
+                            <a (click)="pager.currentPage != pager.totalPages && !isModalShown && performSetPage(pager.currentPage + 1)">Next</a>
                         </li>
                         <li [ngClass]="{disabled: pager.currentPage == pager.totalPages}">
-                            <a (click)="pager.currentPage != pager.totalPages && performSetPage(pager.totalPages)">Last</a>
+                            <a (click)="pager.currentPage != pager.totalPages && !isModalShown && performSetPage(pager.totalPages)">Last</a>
                         </li>
                     </ul>
             </div>

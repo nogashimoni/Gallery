@@ -9,12 +9,12 @@ import {Component, EventEmitter} from "angular2/core";
     template:`
         <div>
         <h8> {{title}} </h8>
-        <select #result (change)="update.emit(result.value)">
+        <select #result (change)="update.emit(result.value)" [disabled]="disabled" >
             <option value = ""> {{defaultOptionText}} </option>
             <option *ngFor="#option of options" > {{option}} </option>
         </select>
         </div>`,
-    inputs: ['title', 'options', 'defaultOptionText'],
+    inputs: ['title', 'options', 'defaultOptionText', 'disabled'],
     outputs: ['update']
 })
 
@@ -22,6 +22,7 @@ export class DropDown {
     title: string
     options: string[]
     defaultOptionText: string;
+    disabled: boolean;
 
     public update = new EventEmitter();
 
