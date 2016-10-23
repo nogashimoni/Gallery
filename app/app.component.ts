@@ -8,7 +8,7 @@ import {GalleryComponent} from './gallery.component'
     [isSearchable] = isSearchable
     [isPaginationEnabled] = isPaginationEnabled
     [defaultResultsPerPage] = resultsPerPage
-    [rotateTime] = rotateTime
+    [rotateSeconds] = rotateSeconds
     ></gallery>`,
     directives: [GalleryComponent]
 })
@@ -17,6 +17,6 @@ export class AppComponent {
     isSearchable: boolean = true;
     isPaginationEnabled: boolean = true;
     resultsPerPage: number = 4;
-    rotateTime: number = 2;
+    rotateSeconds: number = 1;
 
 }

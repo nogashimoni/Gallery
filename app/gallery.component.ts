@@ -12,7 +12,7 @@ import {DropDown} from "./dropdown.component";
 @Component({
     selector: 'gallery',
     templateUrl: './app/gallery.component.html',
-    inputs: ['feedUrl', 'isSearchable', 'isPaginationEnabled', 'defaultResultsPerPage', 'isSortable', 'rotateTime'],
+    inputs: ['feedUrl', 'isSearchable', 'isPaginationEnabled', 'defaultResultsPerPage', 'isSortable', 'rotateSeconds'],
     providers: [GetPicturesService, PagerService],
     directives: [SearchBox, DropDown],
 })
@@ -27,7 +27,7 @@ export class GalleryComponent {
 
     defaultResultsPerPage: number = 10;
     resultsPerPage: number = this.defaultResultsPerPage;
-    rotateTime: number = 4;
+    rotateSeconds: number = 4;
 
     pictures: Picture[];
     picturesToPresent: Picture[];
@@ -47,6 +47,10 @@ export class GalleryComponent {
     isModalShown: boolean = false;
     isBigShowAutoRotated: boolean = true;
     bigShowCurrentIndex: number = 0;
+    interval: any;
+
+
+    // Copying context for callback functions
 
 
 
@@ -190,7 +194,18 @@ export class GalleryComponent {
         this.isModalShown = true;
         this.isBigShowAutoRotated = true;
         this.bigShowCurrentIndex = 0;
+        this.interval = setInterval(() =>
+                {this.bigShowCurrentIndex = (this.bigShowCurrentIndex+1)%this.relevantPictures.length} ,
+                this.rotateSeconds*1000 );
         return;
+    }
+
+
+    private resetInterval() {
+        if (this.interval) {
+            clearInterval(this.interval);
+            this.interval = null;
+        }
     }
 
 
@@ -214,6 +229,9 @@ export class GalleryComponent {
     closeModal() {
         this.isModalShown = false;
         this.bigShowCurrentIndex = 0;
+        if (this.isBigShowAutoRotated) {
+            this.resetInterval();
+        }
     }
 
 }

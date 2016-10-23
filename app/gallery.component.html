@@ -11,7 +11,7 @@
         <h5> pagination: {{ isPaginationEnabled }} </h5>
         <h5> results per page: {{ resultsPerPage }} </h5>
         <h5> sorting input: {{ isSortable }} </h5>
-        <h5> rotate time input: {{ rotateTime }} </h5>
+        <h5> rotate time input: {{ rotateSeconds }} </h5>
     </div>
 
     <div class="gallery">
@@ -35,7 +35,7 @@
 
         <!-- modal part -->
         <div *ngIf="isModalShown">
-            <img src = "{{ relevantPictures[bigShowCurrentIndex].url }}" onerror="this.src='./app/assets/images/placeholder.png'">
+            <img src = "{{ relevantPictures[bigShowCurrentIndex].url }}" onerror="this.src='./app/assets/images/placeholder.png'" >
             <div *ngIf="!isBigShowAutoRotated">
                  <button (click)="updateBigShowCurrentPicture(bigShowCurrentIndex - 1)"> prev </button>
                  <button (click)="updateBigShowCurrentPicture(bigShowCurrentIndex + 1)"> next </button>
