@@ -68,6 +68,7 @@ export class GalleryComponent {
         }
     }
 
+
     private updateRelevantData() {
         if (this.isSearchable && this.searchTerm != "") {
             this.relevantPictures = this.searchPictures();
@@ -81,7 +82,8 @@ export class GalleryComponent {
     };
 
 
-    setPage(pageNumber: number) {
+    performSetPage(pageNumber: number) {
+        // Should be used only when pagination is enabled
         this.currentPage = pageNumber;
         this.picturesToPresent = this.calculateCurrentPage();
     }
@@ -110,7 +112,7 @@ export class GalleryComponent {
     searchPictures(): Picture[] {
         let result: Picture[] = [];
         for (var picture of this.pictures) {
-            if (picture.title.startsWith(this.searchTerm)) {
+            if (picture.title.toLowerCase().startsWith(this.searchTerm.toLowerCase())) {
                 result.push(picture);
             }
         }
@@ -124,7 +126,7 @@ export class GalleryComponent {
         } else {
             this.resultsPerPage = parseInt(resultsPerPage);
         }
-        this.setPage(1);
+        this.performSetPage(1);
     }
 
 
@@ -133,7 +135,9 @@ export class GalleryComponent {
         let relevantOptions = [];
 
         for (var i=0; i<allOptions.length; i++) {
-            var currentOptionIsRelevant:boolean = (this.relevantPictures.length >= allOptions[i])
+            var currentOptionIsRelevant:boolean;
+            currentOptionIsRelevant = this.relevantPictures.length >= allOptions[i] &&
+                this.defaultResultsPerPage != allOptions[i];
             if (currentOptionIsRelevant) {
                 relevantOptions.push(allOptions[i]);
             }
@@ -160,17 +164,10 @@ export class GalleryComponent {
                 if (x.sortProperty.localeCompare("date") == 0) {
                     compare1 = picture1.date;
                     compare2 = picture2.date;
-                } else if (x.sortProperty.localeCompare("id") == 0 ) {
-                    compare1 = picture1.id;
-                    compare2 = picture2.id;
                 } else if (x.sortProperty.localeCompare("title") == 0 ) {
                     compare1 = picture1.title;
                     compare2 = picture2.title;
-                } else if (x.sortProperty.localeCompare("url") == 0 ) {
-                    compare1 = picture1.url;
-                    compare2 = picture2.url;
                 }
-
                 if (compare1 == compare2) {
                     return 0;
                 } else if (compare1 < compare2) {

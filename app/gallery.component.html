@@ -20,7 +20,7 @@
 
 
     <div *ngIf="isSortable">
-        <drop-down [options]="['title', 'url', 'date', 'id']" title="sort by:" (update)="performSort($event)"></drop-down>
+        <drop-down [options]="['title', 'date']" title="sort by:" (update)="performSort($event)"></drop-down>
     </div>
 
     <dic *ngIf="isPaginationEnabled">
@@ -40,20 +40,20 @@
         <div class="text-center">
             <div *ngIf="isPaginationEnabled">
                 <ul *ngIf="pager.pages.length" class="pagination">
-                        <li [ngClass]="{disabled:pager.currentPage === 1}">
-                            <a (click)="setPage(1)">First</a>
+                        <li [ngClass]="{disabled: pager.currentPage == 1}">
+                            <a (click)="pager.currentPage != 1 && performSetPage(1)">First</a>
                         </li>
-                        <li [ngClass]="{disabled:pager.currentPage === 1}">
-                            <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+                        <li [ngClass]="{disabled: pager.currentPage == 1}">
+                            <a (click)="pager.currentPage != 1 && performSetPage(pager.currentPage - 1)">Previous</a>
                         </li>
                         <li *ngFor="#page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-                            <a (click)="setPage(page)">{{page}}</a>
+                            <a (click)="performSetPage(page)">{{page}}</a>
                         </li>
-                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                            <a (click)="setPage(pager.currentPage + 1)">Next</a>
+                        <li [ngClass]="{disabled: pager.currentPage == pager.totalPages}">
+                            <a (click)="pager.currentPage != pager.totalPages && performSetPage(pager.currentPage + 1)">Next</a>
                         </li>
-                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                            <a (click)="setPage(pager.totalPages)">Last</a>
+                        <li [ngClass]="{disabled: pager.currentPage == pager.totalPages}">
+                            <a (click)="pager.currentPage != pager.totalPages && performSetPage(pager.totalPages)">Last</a>
                         </li>
                     </ul>
             </div>

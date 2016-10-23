@@ -52,6 +52,7 @@ export class PagerService {
         };
     }
 
+
     range(start:any, stop:any) {
         var a = [start];
         var b = start;
