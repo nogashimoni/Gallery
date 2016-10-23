@@ -14,29 +14,45 @@
         <h5> rotate time input: {{ rotateTime }} </h5>
     </div>
 
-    <div *ngIf="isSearchable">
-        <search-box (update)="performSearch($event)"></search-box>
-    </div>
-
-
-    <div *ngIf="isSortable">
-        <drop-down [options]="['title', 'date']" title="sort by:" (update)="performSort($event)"></drop-down>
-    </div>
-
-    <dic *ngIf="isPaginationEnabled">
-        <drop-down [options]="calacResultsPerPageOptions()" title="results in a page:" [defaultOptionText]="defaultResultsPerPage" (update)="performChangeResultsPerPage($event)" ></drop-down>
-    </dic>
-
     <div class="gallery">
+
+        <div *ngIf="isSearchable">
+            <search-box (update)="performSearch($event)"></search-box>
+        </div>
+
+        <div *ngIf="isSortable">
+            <drop-down [options]="['title', 'date']" title="sort by:" (update)="performSort($event)"></drop-down>
+        </div>
+
+        <div *ngIf="isPaginationEnabled">
+            <drop-down [options]="calacResultsPerPageOptions()" title="results in a page:" [defaultOptionText]="defaultResultsPerPage" (update)="performChangeResultsPerPage($event)" ></drop-down>
+        </div>
+
+        <div>
+            <button (click)="showSlideShow()"> Slide Show </button>
+        </div>
+
+
+        <!-- modal part -->
+        <div *ngIf="isModalShown">
+            <img src = "{{ relevantPictures[bigShowCurrentIndex].url }}" onerror="this.src='./app/assets/images/placeholder.png'">
+            <div *ngIf="!isBigShowAutoRotated">
+                 <button (click)="updateBigShowCurrentPicture(bigShowCurrentIndex - 1)"> prev </button>
+                 <button (click)="updateBigShowCurrentPicture(bigShowCurrentIndex + 1)"> next </button>
+            </div>
+            <button (click)="closeModal()"> close </button>
+        </div>
+
+
         <!-- present pictures -->
         <div>
             <div class="img" *ngFor=" #picture of picturesToPresent">
-                <img src= "{{ picture.url }}" onerror="this.src='./app/assets/images/placeholder.png'" width="100" height="100">
+                <img src= "{{ picture.url }}" onerror="this.src='./app/assets/images/placeholder.png'" (click)="showBigImage()" width="100" height="100">
                 <div class="description"> {{picture.title}} </div>
             </div>
         </div>
 
-        <!-- pager -->
+        <!-- pagination -->
         <div class="text-center">
             <div *ngIf="isPaginationEnabled">
                 <ul *ngIf="pager.pages.length" class="pagination">

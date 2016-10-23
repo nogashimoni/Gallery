@@ -43,6 +43,13 @@ export class GalleryComponent {
     // Sort variables
     sortProperty: string = "";
 
+    // Slideshow and bigPicture variables
+    isModalShown: boolean = false;
+    isBigShowAutoRotated: boolean = true;
+    bigShowCurrentIndex: number = 0;
+
+
+
     constructor (getPicturesService: GetPicturesService, private pagerService: PagerService) {
         //getPicturesService.getFeedFromUrl(this.feedUrl).subscribe( res => this.feed = res);
         this.pictures = getPicturesService.getPictures(this.feedUrl);
@@ -176,6 +183,37 @@ export class GalleryComponent {
                     return 1;
                 }
             })
+    }
+
+
+    showSlideShow() {
+        this.isModalShown = true;
+        this.isBigShowAutoRotated = true;
+        this.bigShowCurrentIndex = 0;
+        return;
+    }
+
+
+    showBigImage() {
+        this.isModalShown = true;
+        this.isBigShowAutoRotated = false;
+        this.bigShowCurrentIndex = 0;
+    }
+
+
+    updateBigShowCurrentPicture(newIndex: number) {
+        if (newIndex >= this.relevantPictures.length) {
+            newIndex = 0;
+        } else if (newIndex < 0) {
+            newIndex = this.relevantPictures.length - 1;
+        }
+        this.bigShowCurrentIndex = newIndex;
+    }
+
+
+    closeModal() {
+        this.isModalShown = false;
+        this.bigShowCurrentIndex = 0;
     }
 
 }
