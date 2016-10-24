@@ -1,16 +1,7 @@
 <!-- bootstrap css -->
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
 
-
 <div>
-    <div>
-        <h5> feed url: {{ feedUrl }} </h5>
-        <h5> search: {{ isSearchable }} </h5>
-        <h5> pagination: {{ isPaginationEnabled }} </h5>
-        <h5> results per page: {{ resultsPerPage }} </h5>
-        <h5> sorting input: {{ isSortable }} </h5>
-        <h5> rotate time input: {{ rotateSeconds }} </h5>
-    </div>
 
     <div id="gallery">
 
@@ -46,10 +37,10 @@
 
 
         <!-- present pictures -->
-        <div>
-            <div class="img" *ngFor="let picture of picturesToPresent; let i = index">
-                <img src= "{{ picture.url }}" onerror="this.src='./app/assets/images/placeholder.png'" (click)="showBigImage(i)"  width="100" height="100">
-                <div class="description"> {{picture.title}} </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-xs-6" *ngFor="let picture of picturesToPresent; let i = index">
+                <img src= "{{ picture.url }}" title="{{picture.title}}" onerror="this.src='./app/assets/images/placeholder.png'" (click)="showBigImage(i)"  width="100" height="100">
+                <!--<div class="description"> {{picture.title}} </div>-->
                 <button (click) = performDeletePicture(picture.id) [disabled]="isModalShown"> delete </button>
             </div>
         </div>
