@@ -1,7 +1,6 @@
-/*All gallery design*/
 #gallery {
     background-color: white;
-    margin: 2%;
+    margin: 8%;
     border-style: solid;
     border-width: 1px;
     border-color: whitesmoke;
@@ -17,7 +16,7 @@
 
 
 .row {
-  margin: 2%;
+  margin: 1%;
 }
 
 
@@ -29,20 +28,21 @@
 }
 
 
-.thumbImage:hover {
-    border: 1px solid #777;
+.imageAndButton {
+  position: relative;
+  float:left;
 }
 
 
-
-
-.thumbImage img.portrait {
-    width: 100%;
-    height: auto;
+.glyphicon{
+    position:absolute;
+    top:5px;
+    left:5px;
 }
 
-
-
+.disabled-zone{
+    opacity: 0.5;
+}
 
 
 a {

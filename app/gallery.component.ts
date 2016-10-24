@@ -48,12 +48,13 @@ export class GalleryComponent {
     interval:any;
 
 
-    // {88: true, 89: true}
-    // [88, 89, 88]
+    // {88: true, 89: true} doesn't allow duplicate keys
     blacklist: {[id: number]: boolean};
 
+    pictureHooveredIndex: number;
 
-    constructor(getPicturesService:GetPicturesService, private pagerService:PagerService) {
+
+  constructor(getPicturesService:GetPicturesService, private pagerService:PagerService) {
         //getPicturesService.getFeedFromUrl(this.feedUrl).subscribe( res => this.feed = res);
         this.pictures = getPicturesService.getPictures(this.feedUrl);
         this.relevantPictures = this.pictures.slice(0); // copy pictures array
@@ -250,6 +251,16 @@ export class GalleryComponent {
         if (this.isBigShowAutoRotated) {
             this.resetInterval();
         }
+    }
+
+
+    onPictureMouseover(hooveredIndex: number) {
+      this.pictureHooveredIndex = hooveredIndex;
+    }
+
+
+    onPictureMouseleave() {
+      this.pictureHooveredIndex = -1;
     }
 
 }

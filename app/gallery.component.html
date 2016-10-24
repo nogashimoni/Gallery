@@ -5,30 +5,32 @@
 
     <div id="gallery">
 
+      <!-- modal part -->
+      <div *ngIf="isModalShown">
+        <img src = "{{ relevantPictures[bigShowCurrentIndex].url }}" onerror="this.src='./app/assets/images/placeholder.png'" >
+        <div *ngIf="!isBigShowAutoRotated">
+          <button (click)="updateBigShowCurrentPicture(bigShowCurrentIndex - 1)"> prev </button>
+          <button (click)="updateBigShowCurrentPicture(bigShowCurrentIndex + 1)"> next </button>
+        </div>
+        <button (click)="closeModal()"> close </button>
+      </div>
+
+      <div id="not-modal-part" [class.disabled-zone]="isModalShown">
         <div id="controlers">
             <search-box *ngIf="isSearchable" (update)="performSearch($event)" [disabled]="isModalShown"></search-box>
-            <drop-down *ngIf="isSortable" [options]="['title', 'date']" dropDowntitle="sort by:" (update)="performSort($event)" [disabled]="isModalShown"></drop-down>
-            <drop-down  *ngIf="isPaginationEnabled"[options]="calacResultsPerPageOptions()" dropDowntitle="results in a page:" [defaultOptionText]="defaultResultsPerPage" (update)="performChangeResultsPerPage($event)" [disabled]="isModalShown"></drop-down>
+            <drop-down *ngIf="isSortable" [options]="['title', 'date']" dropDowntitle="Sort by:" (update)="performSort($event)" [disabled]="isModalShown"></drop-down>
+            <drop-down  *ngIf="isPaginationEnabled"[options]="calacResultsPerPageOptions()" dropDowntitle="Results in a page:" [defaultOptionText]="defaultResultsPerPage" (update)="performChangeResultsPerPage($event)" [disabled]="isModalShown"></drop-down>
             <button (click)="showSlideShow()" [disabled] = "isModalShown" > Slide Show </button>
-        </div>
-
-        <!-- modal part -->
-        <div *ngIf="isModalShown">
-            <img src = "{{ relevantPictures[bigShowCurrentIndex].url }}" onerror="this.src='./app/assets/images/placeholder.png'" >
-            <div *ngIf="!isBigShowAutoRotated">
-                 <button (click)="updateBigShowCurrentPicture(bigShowCurrentIndex - 1)"> prev </button>
-                 <button (click)="updateBigShowCurrentPicture(bigShowCurrentIndex + 1)"> next </button>
-            </div>
-            <button (click)="closeModal()"> close </button>
         </div>
 
 
         <!-- present pictures -->
         <div class="row">
             <div class="col-lg-3 col-md-4 col-xs-6" *ngFor="let picture of picturesToPresent; let i = index">
-                <img class=thumbImage src= "{{ picture.url }}" title="{{picture.title}}" onerror="this.src='./app/assets/images/placeholder.png'" (click)="showBigImage(i)" >
-                <!--<div class="description"> {{picture.title}} </div>-->
-                <button (click) = performDeletePicture(picture.id) [disabled]="isModalShown"> delete </button>
+                <div class="imageAndButton" (mouseenter)='onPictureMouseover(i)' (mouseleave)='onPictureMouseleave()'>
+                  <img class="thumbImage" src= "{{ picture.url }}" title="{{picture.title}}" onerror="this.src='./app/assets/images/placeholder.png'" (click)="showBigImage(i+(currentPage-1)*resultsPerPage)" >
+                  <button class="glyphicon glyphicon-trash" *ngIf="i==pictureHooveredIndex" (click) = performDeletePicture(picture.id) [disabled]="isModalShown" >  </button>
+                </div>
             </div>
         </div>
 
@@ -56,6 +58,7 @@
                     </ul>
             </div>
         </div>
+    </div>
     </div>
 
 </div>

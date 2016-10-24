@@ -6,7 +6,7 @@ import {Component, Output, EventEmitter} from "@angular/core";
 @Component({
     selector: "search-box",
     template:  `<div id="search-component">
-                    <h4> Search by: </h4>
+                    Search by:
                     <input #input type = "text" (input)="update.emit(input.value)"  [readOnly] = disabled/>
                 </div>
                 `,
