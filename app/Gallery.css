@@ -1,18 +1,23 @@
 /*All gallery design*/
 #gallery {
-    width:85%;
-    border: 2px solid;
-    background-color: lightcyan;
+    background-color: white;
+    margin: 2%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: whitesmoke;
 }
 
+
 #controlers {
+    padding: 1%;
     display: flex;
     justify-content: space-between;
     background-color: #f6f7f9;
 }
 
-#thumbImages {
 
+.row {
+  margin: 2%;
 }
 
 
@@ -20,37 +25,26 @@
     position: relative;
     width: 206px;
     height: 206px;
-    /*overflow: hidden;*/
+    margin: 1%;
 }
 
-#thumbImage:hover {
+
+.thumbImage:hover {
     border: 1px solid #777;
 }
 
-#thumbImage img {
-    object-fit: cover;
-    object-position: center;
-}
+
+
 
 .thumbImage img.portrait {
     width: 100%;
     height: auto;
 }
 
-#description {
-    padding: 15px;
-    text-align: center;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow:hidden;
-}
-
-#description:hover {
-    overflow: visible;
-}
 
 
-/* Pagination design */
+
+
 a {
     cursor: pointer;
 }

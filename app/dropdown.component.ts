@@ -8,18 +8,18 @@ import {Component, EventEmitter} from "@angular/core";
     selector: "drop-down",
     template:`
         <div>
-        <h4> {{title}} </h4>
+         {{dropDowntitle}}
         <select #result (change)="update.emit(result.value)" [disabled]="disabled" >
             <option value = ""> {{defaultOptionText}} </option>
             <option *ngFor="let option of options" > {{option}} </option>
         </select>
         </div>`,
-    inputs: ['title', 'options', 'defaultOptionText', 'disabled'],
+    inputs: ['dropDowntitle', 'options', 'defaultOptionText', 'disabled'],
     outputs: ['update']
 })
 
 export class DropDown {
-    title: string
+    dropDowntitle: string
     options: string[]
     defaultOptionText: string;
     disabled: boolean;

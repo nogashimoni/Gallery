@@ -190,8 +190,8 @@ export class GalleryComponent {
             function (picture1, picture2) {
                 var compare1:any, compare2:any;
                 if (x.sortProperty.localeCompare("date") == 0) {
-                    compare1 = picture1.date;
-                    compare2 = picture2.date;
+                    compare1 = new Date(picture1.date);
+                    compare2 = new Date(picture2.date);
                 } else if (x.sortProperty.localeCompare("title") == 0) {
                     compare1 = picture1.title;
                     compare2 = picture2.title;
@@ -252,16 +252,4 @@ export class GalleryComponent {
         }
     }
 
-
-    //updatePicturesToPresentByRows() {
-    //
-    //    this.picturesToPresentByRows = [];
-    //
-    //    var numOfRows = Math.round(this.picturesToPresent.length / this.imagesPerRow);
-    //    for (var i = 0; i < numOfRows; i++) {
-    //        var start = (this.currentPage - 1) * this.resultsPerPage / 5;
-    //        var end = Math.min(start+this.imagesPerRow, this.picturesToPresent.length );
-    //        this.picturesToPresentByRows.push(this.picturesToPresent.slice(start, end));
-    //    }
-    //}
 }

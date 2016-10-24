@@ -5,23 +5,11 @@
 
     <div id="gallery">
 
-
         <div id="controlers">
-            <div *ngIf="isSearchable">
-                <search-box (update)="performSearch($event)" [disabled]="isModalShown"></search-box>
-            </div>
-
-            <div *ngIf="isSortable">
-                <drop-down [options]="['title', 'date']" title="sort by:" (update)="performSort($event)" [disabled]="isModalShown"></drop-down>
-            </div>
-
-            <div *ngIf="isPaginationEnabled">
-                <drop-down [options]="calacResultsPerPageOptions()" title="results in a page:" [defaultOptionText]="defaultResultsPerPage" (update)="performChangeResultsPerPage($event)" [disabled]="isModalShown"></drop-down>
-            </div>
-
-            <div>
-                <button (click)="showSlideShow()" [disabled] = "isModalShown" > Slide Show </button>
-            </div>
+            <search-box *ngIf="isSearchable" (update)="performSearch($event)" [disabled]="isModalShown"></search-box>
+            <drop-down *ngIf="isSortable" [options]="['title', 'date']" dropDowntitle="sort by:" (update)="performSort($event)" [disabled]="isModalShown"></drop-down>
+            <drop-down  *ngIf="isPaginationEnabled"[options]="calacResultsPerPageOptions()" dropDowntitle="results in a page:" [defaultOptionText]="defaultResultsPerPage" (update)="performChangeResultsPerPage($event)" [disabled]="isModalShown"></drop-down>
+            <button (click)="showSlideShow()" [disabled] = "isModalShown" > Slide Show </button>
         </div>
 
         <!-- modal part -->
@@ -35,23 +23,15 @@
         </div>
 
 
-
         <!-- present pictures -->
         <div class="row">
             <div class="col-lg-3 col-md-4 col-xs-6" *ngFor="let picture of picturesToPresent; let i = index">
-                <img src= "{{ picture.url }}" title="{{picture.title}}" onerror="this.src='./app/assets/images/placeholder.png'" (click)="showBigImage(i)"  width="100" height="100">
+                <img class=thumbImage src= "{{ picture.url }}" title="{{picture.title}}" onerror="this.src='./app/assets/images/placeholder.png'" (click)="showBigImage(i)" >
                 <!--<div class="description"> {{picture.title}} </div>-->
                 <button (click) = performDeletePicture(picture.id) [disabled]="isModalShown"> delete </button>
             </div>
         </div>
 
-
-        <!--<table>-->
-            <!--<tr *ngFor=" #picturesRow of picturesToPresentByRows">-->
-                <!--<td *ngFor="#picture of picturesRow">-->
-                    <!--<img id="thumbImage" src= "{{ picture.url }}" onerror="this.src='./app/assets/images/placeholder.png'" (click)="!isModalShown && showBigImage(i+(pager.currentPage-1)*resultsPerPage)">-->
-            <!--</tr>-->
-        <!--</table>-->
 
 
         <!-- pagination -->
