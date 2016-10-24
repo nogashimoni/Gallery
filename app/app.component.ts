@@ -1,5 +1,4 @@
-import {Component} from 'angular2/core';
-import {GalleryComponent} from './gallery.component'
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'my-app',
@@ -10,8 +9,7 @@ import {GalleryComponent} from './gallery.component'
     [defaultResultsPerPage] = resultsPerPage
     [rotateSeconds] = rotateSeconds
     [isSortable] = isSortable
-    ></gallery>`,
-    directives: [GalleryComponent]
+    ></gallery>`
 })
 export class AppComponent {
 

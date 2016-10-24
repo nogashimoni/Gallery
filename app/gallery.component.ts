@@ -2,12 +2,10 @@
  * Created by nogalavi on 18/10/2016.
  */
 
-import {Component, Input} from 'angular2/core'
+import {Component, Input} from '@angular/core'
 import {GetPicturesService} from "./get-pictures.service";
 import {PagerService} from "./pager.service";
 import {Picture} from "./picture";
-import {SearchBox} from "./search-box.component";
-import {DropDown} from "./dropdown.component";
 
 @Component({
     selector: 'gallery',
@@ -15,7 +13,6 @@ import {DropDown} from "./dropdown.component";
     styleUrls: ['./app/gallery.css'],
     inputs: ['feedUrl', 'isSearchable', 'isPaginationEnabled', 'defaultResultsPerPage', 'isSortable', 'rotateSeconds'],
     providers: [GetPicturesService, PagerService],
-    directives: [SearchBox, DropDown]
 })
 
 export class GalleryComponent {
@@ -97,7 +94,7 @@ export class GalleryComponent {
 
 
     private updateRelevantData() {
-        let notInBlacklist = (picture) => { return !this.blacklist[picture.id] };
+        let notInBlacklist = (picture: Picture) => { return !this.blacklist[picture.id] };
         this.pictures = this.pictures.filter(notInBlacklist);
         this.relevantPictures = this.relevantPictures.filter(notInBlacklist);
 
@@ -163,7 +160,7 @@ export class GalleryComponent {
 
     calacResultsPerPageOptions(): number[] {
         let allOptions = [5, 10, 15, 20];
-        let relevantOptions = [];
+        let relevantOptions: number[] = [];
 
         for (var i=0; i<allOptions.length; i++) {
             var currentOptionIsRelevant:boolean;
@@ -191,7 +188,7 @@ export class GalleryComponent {
 
         this.relevantPictures.sort(
             function (picture1, picture2) {
-                var compare1, compare2:any;
+                var compare1:any, compare2:any;
                 if (x.sortProperty.localeCompare("date") == 0) {
                     compare1 = picture1.date;
                     compare2 = picture2.date;
@@ -230,7 +227,7 @@ export class GalleryComponent {
     }
 
 
-    showBigImage(indexChosen) {
+    showBigImage(indexChosen: number) {
         this.isModalShown = true;
         this.isBigShowAutoRotated = false;
         this.bigShowCurrentIndex = indexChosen;

@@ -1,6 +1,6 @@
-import {Http} from "angular2/http";
+import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {Injectable} from "angular2/core";
+import {Injectable} from "@angular/core";
 import {Picture} from "./picture";
 /**
  * Created by nogalavi on 18/10/2016.

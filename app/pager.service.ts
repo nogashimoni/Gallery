@@ -11,7 +11,7 @@ export class PagerService {
         // calculate total pages
         var totalPages = Math.ceil(totalItems / pageSize);
 
-        var startPage, endPage;
+        var startPage: number, endPage: number;
         if (totalPages <= 10) {
             // less than 10 total pages so show all
             startPage = 1;

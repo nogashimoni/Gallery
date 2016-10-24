@@ -1,9 +1,16 @@
-# IDE
 .idea
+node_modules
+jspm_packages
+link-checker-results.txt
+**/*npm-debug.log.*
+*.js
+*.js.map
+e2e/**/*.js
+e2e/**/*.js.map
+_test-output
+_temp
 
-# Generated
-/app/*.js
-/app/*.js.map
-
-# Node.js
-/node_modules
+!karma*.js
+!protractor*.js
+!systemjs.config.js
+!wallaby.js

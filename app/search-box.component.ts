@@ -1,12 +1,12 @@
 /**
  * Created by nogalavi on 20/10/2016.
  */
-import {Component, Output, EventEmitter} from "angular2/core";
+import {Component, Output, EventEmitter} from "@angular/core";
 
 @Component({
     selector: "search-box",
     template:  `<div id="search-component">
-                    <h7> Search by: </h7>
+                    <h4> Search by: </h4>
                     <input #input type = "text" (input)="update.emit(input.value)"  [readOnly] = disabled/>
                 </div>
                 `,
