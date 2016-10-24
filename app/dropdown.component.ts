@@ -8,7 +8,7 @@ import {Component, EventEmitter} from "angular2/core";
     selector: "drop-down",
     template:`
         <div>
-        <h8> {{title}} </h8>
+        <h7> {{title}} </h7>
         <select #result (change)="update.emit(result.value)" [disabled]="disabled" >
             <option value = ""> {{defaultOptionText}} </option>
             <option *ngFor="#option of options" > {{option}} </option>

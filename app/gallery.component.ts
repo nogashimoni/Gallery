@@ -12,49 +12,50 @@ import {DropDown} from "./dropdown.component";
 @Component({
     selector: 'gallery',
     templateUrl: './app/gallery.component.html',
+    styleUrls: ['./app/gallery.css'],
     inputs: ['feedUrl', 'isSearchable', 'isPaginationEnabled', 'defaultResultsPerPage', 'isSortable', 'rotateSeconds'],
     providers: [GetPicturesService, PagerService],
-    directives: [SearchBox, DropDown],
+    directives: [SearchBox, DropDown]
 })
 
 export class GalleryComponent {
 
     // Input variables
-    feedUrl: string;
-    isSearchable: boolean = true;
-    isPaginationEnabled: boolean = true;
-    isSortable: boolean = true;
+    feedUrl:string;
+    isSearchable:boolean = true;
+    isPaginationEnabled:boolean = true;
+    isSortable:boolean = true;
 
-    defaultResultsPerPage: number = 10;
-    resultsPerPage: number = this.defaultResultsPerPage;
-    rotateSeconds: number = 4;
+    defaultResultsPerPage:number = 10;
+    resultsPerPage:number = this.defaultResultsPerPage;
+    rotateSeconds:number = 4;
 
-    pictures: Picture[];
-    picturesToPresent: Picture[];
-    relevantPictures: Picture[]; // pictures relevant to search and sort
+    pictures:Picture[];
+    picturesToPresent:Picture[];
+    relevantPictures:Picture[]; // pictures relevant to search and sort
 
     // Paging variables
-    pager: any = {};
-    currentPage: number = 1;
+    pager:any = {};
+    currentPage:number = 1;
 
     // Search variables
-    searchTerm: string = "";
+    searchTerm:string = "";
 
     // Sort variables
-    sortProperty: string = "";
+    sortProperty:string = "";
 
     // Slideshow and bigPicture variables
-    isModalShown: boolean = false;
-    isBigShowAutoRotated: boolean = true;
-    bigShowCurrentIndex: number = 0;
-    interval: any;
+    isModalShown:boolean = false;
+    isBigShowAutoRotated:boolean = true;
+    bigShowCurrentIndex:number = 0;
+    interval:any;
 
 
     // Copying context for callback functions
 
 
 
-    constructor (getPicturesService: GetPicturesService, private pagerService: PagerService) {
+    constructor(getPicturesService:GetPicturesService, private pagerService:PagerService) {
         //getPicturesService.getFeedFromUrl(this.feedUrl).subscribe( res => this.feed = res);
         this.pictures = getPicturesService.getPictures(this.feedUrl);
         this.relevantPictures = this.pictures.slice(0); // copy pictures array
@@ -170,12 +171,12 @@ export class GalleryComponent {
         var x = this;
 
         this.relevantPictures.sort(
-            function(picture1, picture2) {
-                var compare1, compare2 : any;
+            function (picture1, picture2) {
+                var compare1, compare2:any;
                 if (x.sortProperty.localeCompare("date") == 0) {
                     compare1 = picture1.date;
                     compare2 = picture2.date;
-                } else if (x.sortProperty.localeCompare("title") == 0 ) {
+                } else if (x.sortProperty.localeCompare("title") == 0) {
                     compare1 = picture1.title;
                     compare2 = picture2.title;
                 }
@@ -194,9 +195,10 @@ export class GalleryComponent {
         this.isModalShown = true;
         this.isBigShowAutoRotated = true;
         this.bigShowCurrentIndex = 0;
-        this.interval = setInterval(() =>
-                {this.bigShowCurrentIndex = (this.bigShowCurrentIndex+1)%this.relevantPictures.length} ,
-                this.rotateSeconds*1000 );
+        this.interval = setInterval(() => {
+                this.bigShowCurrentIndex = (this.bigShowCurrentIndex + 1) % this.relevantPictures.length
+            },
+            this.rotateSeconds * 1000);
         return;
     }
 
@@ -209,14 +211,14 @@ export class GalleryComponent {
     }
 
 
-    showBigImage() {
+    showBigImage(indexChosen) {
         this.isModalShown = true;
         this.isBigShowAutoRotated = false;
-        this.bigShowCurrentIndex = 0;
+        this.bigShowCurrentIndex = indexChosen;
     }
 
 
-    updateBigShowCurrentPicture(newIndex: number) {
+    updateBigShowCurrentPicture(newIndex:number) {
         if (newIndex >= this.relevantPictures.length) {
             newIndex = 0;
         } else if (newIndex < 0) {
@@ -234,4 +236,16 @@ export class GalleryComponent {
         }
     }
 
+
+    updatePicturesToPresentByRows() {
+
+        this.picturesToPresentByRows = [];
+
+        var numOfRows = Math.round(this.picturesToPresent.length / this.imagesPerRow);
+        for (var i = 0; i < numOfRows; i++) {
+            var start = (this.currentPage - 1) * this.resultsPerPage / 5;
+            var end = Math.min(start+this.imagesPerRow, this.picturesToPresent.length );
+            this.picturesToPresentByRows.push(this.picturesToPresent.slice(start, end));
+        }
+    }
 }
