@@ -51,19 +51,22 @@ export class GalleryComponent {
     interval:any;
 
 
-    // Copying context for callback functions
-
+    // {88: true, 89: true}
+    // [88, 89, 88]
+    blacklist: {[id: number]: boolean};
 
 
     constructor(getPicturesService:GetPicturesService, private pagerService:PagerService) {
         //getPicturesService.getFeedFromUrl(this.feedUrl).subscribe( res => this.feed = res);
         this.pictures = getPicturesService.getPictures(this.feedUrl);
         this.relevantPictures = this.pictures.slice(0); // copy pictures array
+        let localStorageBlacklist = localStorage.getItem('blacklist');
+        this.blacklist = localStorageBlacklist ? JSON.parse(localStorageBlacklist) : {};
     }
 
 
     ngOnInit() {
-        this.setPicturesToPresent();
+        this.updateRelevantData();
     }
 
 
@@ -81,7 +84,23 @@ export class GalleryComponent {
     }
 
 
+    addToBlackList(id: number) {
+        this.blacklist[id] = true;
+        localStorage.setItem('blacklist', JSON.stringify(this.blacklist));
+    }
+
+
+    performDeletePicture(id: number) {
+        this.addToBlackList(id);
+        this.updateRelevantData();
+    }
+
+
     private updateRelevantData() {
+        let notInBlacklist = (picture) => { return !this.blacklist[picture.id] };
+        this.pictures = this.pictures.filter(notInBlacklist);
+        this.relevantPictures = this.relevantPictures.filter(notInBlacklist);
+
         if (this.isSearchable && this.searchTerm != "") {
             this.relevantPictures = this.searchPictures();
         }
@@ -237,15 +256,15 @@ export class GalleryComponent {
     }
 
 
-    updatePicturesToPresentByRows() {
-
-        this.picturesToPresentByRows = [];
-
-        var numOfRows = Math.round(this.picturesToPresent.length / this.imagesPerRow);
-        for (var i = 0; i < numOfRows; i++) {
-            var start = (this.currentPage - 1) * this.resultsPerPage / 5;
-            var end = Math.min(start+this.imagesPerRow, this.picturesToPresent.length );
-            this.picturesToPresentByRows.push(this.picturesToPresent.slice(start, end));
-        }
-    }
+    //updatePicturesToPresentByRows() {
+    //
+    //    this.picturesToPresentByRows = [];
+    //
+    //    var numOfRows = Math.round(this.picturesToPresent.length / this.imagesPerRow);
+    //    for (var i = 0; i < numOfRows; i++) {
+    //        var start = (this.currentPage - 1) * this.resultsPerPage / 5;
+    //        var end = Math.min(start+this.imagesPerRow, this.picturesToPresent.length );
+    //        this.picturesToPresentByRows.push(this.picturesToPresent.slice(start, end));
+    //    }
+    //}
 }

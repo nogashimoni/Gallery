@@ -1,28 +1,43 @@
 /*All gallery design*/
-gallery {
+#gallery {
     width:85%;
-    border: 5px solid;
+    border: 2px solid;
+    background-color: lightcyan;
+}
+
+#controlers {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f6f7f9;
+}
+
+#thumbImages {
+
 }
 
 
-/* pictures design */
-div.img {
-    margin: 5px;
-    border: 1px solid #ccc;
-    float: left;
-    width: 180px;
+.thumbImage {
+    position: relative;
+    width: 206px;
+    height: 206px;
+    /*overflow: hidden;*/
 }
 
-div.img:hover {
+#thumbImage:hover {
     border: 1px solid #777;
 }
 
-div.img img {
+#thumbImage img {
+    object-fit: cover;
+    object-position: center;
+}
+
+.thumbImage img.portrait {
     width: 100%;
     height: auto;
 }
 
-div.description {
+#description {
     padding: 15px;
     text-align: center;
     white-space: nowrap;
@@ -30,7 +45,7 @@ div.description {
     overflow:hidden;
 }
 
-div.description:hover {
+#description:hover {
     overflow: visible;
 }
 

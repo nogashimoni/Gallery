@@ -50,6 +50,7 @@
             <div class="img" *ngFor=" #picture of picturesToPresent; #i = index">
                 <img src= "{{ picture.url }}" onerror="this.src='./app/assets/images/placeholder.png'" (click)="showBigImage(i)"  width="100" height="100">
                 <div class="description"> {{picture.title}} </div>
+                <button (click) = performDeletePicture(picture.id) [disabled]="isModalShown"> delete </button>
             </div>
         </div>
 
