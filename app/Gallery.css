@@ -1,13 +1,11 @@
 #gallery {
     background-color: white;
     margin: 8%;
-    border-style: solid;
-    border-width: 1px;
-    border-color: whitesmoke;
+    border: 1px solid #f5f5f5;
 }
 
 
-#controlers {
+.controllers {
     padding: 1%;
     display: flex;
     justify-content: space-between;
@@ -34,14 +32,54 @@
 }
 
 
-.glyphicon{
+.galleryModal {
+  z-index: 1;
+  overflow: auto;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  width: 600px;
+  margin-top: -150px;
+  margin-left: -300px;
+  padding-bottom: 50px;
+}
+
+
+.galleryModalContent {
+  float: none;
+  padding-top: 50px;
+  margin: auto;
+  background-color: #dbdbdb;
+}
+
+
+#modalImage {
+  display: block;
+  margin: 5px auto;
+  padding-bottom: 50px;
+}
+
+
+.glyphicon.glyphicon-trash{
     position:absolute;
     top:5px;
     left:5px;
 }
 
+.glyphicon.glyphicon-remove{
+  position:absolute;
+  top:5px;
+  left:5px;
+}
+
+.nextPrev {
+  display: flex;
+  justify-content: center;
+}
+
+
 .disabled-zone{
-    opacity: 0.5;
+    opacity: 0.9;
 }
 
 

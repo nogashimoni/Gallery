@@ -73,20 +73,18 @@ export class GalleryComponent {
       console.log(error + "\n An error with the given url has occurred. Will load default images.");
       this.feedUrl = this.backupFeedUrl;
       this.loadPictures();
-      //this.updateRelevantData();
     }
 
 
     loadPictures() {
-      this.getPicturesService.getPictures(this.backupFeedUrl).subscribe(
+      this.getPicturesService.getPictures(this.feedUrl).subscribe(
             (pictures) => {
               this.isPicturesReceived = true;
               this.pictures = pictures;
               this.relevantPictures = this.pictures.slice(0); // copy pictures array
               this.updateRelevantData();
-            }
-        //,
-            //(err) => {this.handleLoadPicturesError(err)}
+            },
+            (err) => {this.handleLoadPicturesError(err)}
         );
     }
 
