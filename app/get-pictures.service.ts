@@ -16,25 +16,28 @@ import 'rxjs/add/operator/catch';
 export class GetPicturesService {
 
 
-  constructor(private http: Http){}
+  constructor(private http:Http) {
+  }
 
 
+  /**
+   * Receives a url, performs a http get request and returns an Observable.
+   * @return {Observable<Picture[]>}
+   */
 
-  getPictures(url: string) : Observable<Picture[]> {
-
+  getPictures(url:string):Observable<Picture[]> {
     return this.http.get(url)
       .map((res:Response) => res.json())
       .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
   }
 
 
-
   /**
-   * This function is used instead of http get function.
+   * This function is can be used instead of getPictures(url), for debugging purposes.
    * @return {Picture[]} mock pictures array
    */
 
-  getMockPictures (url: string) {
+  getMockPictures(url:string) {
     return [
       {
         "title": "Blue river (much better in original size - press)",

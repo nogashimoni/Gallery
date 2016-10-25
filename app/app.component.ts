@@ -12,12 +12,10 @@ import { Component } from '@angular/core';
     ></gallery>`
 })
 export class AppComponent {
-
     isSearchable: boolean = true;
     isPaginationEnabled: boolean = true;
-    resultsPerPage: number = 1;
-    rotateSeconds: number = 2;
+    resultsPerPage: number = 9;
+    rotateSeconds: number = 5;
     isSortable: boolean = true;
     url: string = "https://s3.amazonaws.com/yotpo-public/images.json";
-
 }

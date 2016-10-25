@@ -1,36 +1,31 @@
 #gallery {
-    background-color: white;
-    margin: 8%;
-    border: 1px solid #f5f5f5;
+  background-color: white;
+  margin: 7%;
+  border: 1px solid #f5f5f5;
 }
-
 
 .controllers {
-    padding: 1%;
-    display: flex;
-    justify-content: space-between;
-    background-color: #f6f7f9;
+  padding: 1%;
+  display: flex;
+  justify-content: space-between;
+  background-color: #f6f7f9;
 }
-
 
 .row {
   margin: 1%;
 }
 
-
 .thumbImage {
-    position: relative;
-    width: 206px;
-    height: 206px;
-    margin: 1%;
+  position: relative;
+  width: 206px;
+  height: 206px;
+  margin: 1%;
 }
-
 
 .imageAndButton {
   position: relative;
-  float:left;
+  float: left;
 }
-
 
 .galleryModal {
   z-index: 1;
@@ -44,7 +39,6 @@
   padding-bottom: 50px;
 }
 
-
 .galleryModalContent {
   float: none;
   padding-top: 50px;
@@ -52,24 +46,22 @@
   background-color: #dbdbdb;
 }
 
-
 #modalImage {
   display: block;
   margin: 5px auto;
   padding-bottom: 50px;
 }
 
-
-.glyphicon.glyphicon-trash{
-    position:absolute;
-    top:5px;
-    left:5px;
+.glyphicon.glyphicon-trash {
+  position: absolute;
+  top: 5px;
+  left: 5px;
 }
 
-.glyphicon.glyphicon-remove{
-  position:absolute;
-  top:5px;
-  left:5px;
+.glyphicon.glyphicon-remove {
+  position: absolute;
+  top: 5px;
+  left: 5px;
 }
 
 .nextPrev {
@@ -77,12 +69,10 @@
   justify-content: center;
 }
 
-
-.disabled-zone{
-    opacity: 0.9;
+.disabled-zone {
+  opacity: 0.5;
 }
 
-
 a {
-    cursor: pointer;
+  cursor: pointer;
 }

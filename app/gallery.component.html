@@ -1,67 +1,77 @@
 <!-- bootstrap css -->
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
 
 <div>
 
-    <div id="gallery" *ngIf="isPicturesReceived">
+  <div id="gallery" *ngIf="isPicturesReceived">
 
-      <!-- modal part -->
-        <div *ngIf="isModalShown" class="galleryModal">
-          <div class="galleryModalContent">
-            <button class="glyphicon glyphicon-remove" (click)="closeModal()">  </button>
-            <div *ngIf="!isBigShowAutoRotated" class="nextPrev">
-              <button class="glyphicon glyphicon-chevron-left" (click)="updateBigShowCurrentPicture(bigShowCurrentIndex - 1)">   </button>
-              <button class="glyphicon glyphicon-chevron-right" (click)="updateBigShowCurrentPicture(bigShowCurrentIndex + 1)">  </button>
-            </div>
-            <img id="modalImage" src = "{{ relevantPictures[bigShowCurrentIndex].url }}" onerror="this.src='./app/assets/images/placeholder.png'" >
+    <!-- modal part -->
+    <div *ngIf="isModalShown" class="galleryModal">
+      <div class="galleryModalContent">
+        <button class="glyphicon glyphicon-remove" (click)="performCloseModal()"></button>
+        <div *ngIf="!isBigShowAutoRotated" class="nextPrev">
+          <button class="glyphicon glyphicon-chevron-left"
+                  (click)="updateBigShowCurrentPicture(bigShowCurrentIndex - 1)"></button>
+          <button class="glyphicon glyphicon-chevron-right"
+                  (click)="updateBigShowCurrentPicture(bigShowCurrentIndex + 1)"></button>
+        </div>
+        <img id="modalImage" src="{{ relevantPictures[bigShowCurrentIndex].url }}"
+             onerror="this.src='./app/assets/images/placeholder.png'">
+      </div>
+    </div>
+
+
+    <div id="not-modal-part" [class.disabled-zone]="isModalShown">
+      <div class="controllers">
+        <search-box *ngIf="isSearchable" (update)="performSearch($event)" [disabled]="isModalShown"></search-box>
+        <drop-down *ngIf="isSortable" [options]="['title', 'date']" dropDowntitle="Sort by:"
+                   (update)="performSort($event)" [disabled]="isModalShown"></drop-down>
+        <drop-down *ngIf="isPaginationEnabled" [options]="calacResultsPerPageOptions()"
+                   dropDowntitle="Change results per page:" [defaultOptionText]=""
+                   (update)="performChangeResultsPerPage($event)" [disabled]="isModalShown"></drop-down>
+        <button class="glyphicon glyphicon-play-circle" (click)="performShowSlideShow()"
+                [disabled]="isModalShown"></button>
+      </div>
+
+
+      <!-- present pictures -->
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-xs-6" *ngFor="let picture of picturesToPresent; let i = index">
+          <div class="imageAndButton" (mouseenter)='onPictureMouseEnter(i)' (mouseleave)='onPictureMouseLeave()'>
+            <img class="thumbImage" src="{{ picture.url }}" title="{{picture.title}}"
+                 onerror="this.src='./app/assets/images/placeholder.png'"
+                 (click)="performShowBigImage(i+(currentPage-1)*resultsPerPage)">
+            <button class="glyphicon glyphicon-trash" *ngIf="!isModalShown && i==pictureHooveredIndex"
+                    (click)=performDeletePicture(picture.id) [disabled]="isModalShown"></button>
           </div>
         </div>
+      </div>
 
 
-      <div id="not-modal-part" [class.disabled-zone]="isModalShown">
-        <div class="controllers">
-            <search-box *ngIf="isSearchable" (update)="performSearch($event)" [disabled]="isModalShown"></search-box>
-            <drop-down *ngIf="isSortable" [options]="['title', 'date']" dropDowntitle="Sort by:" (update)="performSort($event)" [disabled]="isModalShown"></drop-down>
-            <drop-down  *ngIf="isPaginationEnabled"[options]="calacResultsPerPageOptions()" dropDowntitle="Results in a page:" [defaultOptionText]="defaultResultsPerPage" (update)="performChangeResultsPerPage($event)" [disabled]="isModalShown"></drop-down>
-            <button (click)="showSlideShow()" [disabled] = "isModalShown" > Slide Show </button>
+      <!-- pagination -->
+      <div class="text-center">
+        <div *ngIf="isPaginationEnabled">
+          <ul *ngIf="pager.pages.length" class="pagination">
+            <li [ngClass]="{disabled: pager.currentPage == 1}">
+              <a (click)="pager.currentPage != 1 && !isModalShown && performSetPage(1)">First</a>
+            </li>
+            <li [ngClass]="{disabled: pager.currentPage == 1}">
+              <a (click)="pager.currentPage != 1 && !isModalShown && performSetPage(pager.currentPage - 1)">Previous</a>
+            </li>
+            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+              <a (click)="!isModalShown && performSetPage(page)">{{page}}</a>
+            </li>
+            <li [ngClass]="{disabled: pager.currentPage == pager.totalPages}">
+              <a
+                (click)="pager.currentPage != pager.totalPages && !isModalShown && performSetPage(pager.currentPage + 1)">Next</a>
+            </li>
+            <li [ngClass]="{disabled: pager.currentPage == pager.totalPages}">
+              <a (click)="pager.currentPage != pager.totalPages && !isModalShown && performSetPage(pager.totalPages)">Last</a>
+            </li>
+          </ul>
         </div>
-
-
-        <!-- present pictures -->
-        <div class="row">
-            <div class="col-lg-3 col-md-4 col-xs-6" *ngFor="let picture of picturesToPresent; let i = index">
-                <div class="imageAndButton" (mouseenter)='onPictureMouseEnter(i)' (mouseleave)='onPictureMouseLeave()'>
-                  <img class="thumbImage" src= "{{ picture.url }}" title="{{picture.title}}" onerror="this.src='./app/assets/images/placeholder.png'" (click)="showBigImage(i+(currentPage-1)*resultsPerPage)" >
-                  <button class="glyphicon glyphicon-trash" *ngIf="!isModalShown && i==pictureHooveredIndex" (click) = performDeletePicture(picture.id) [disabled]="isModalShown" >  </button>
-                </div>
-            </div>
-        </div>
-
-
-
-        <!-- pagination -->
-        <div class="text-center">
-            <div *ngIf="isPaginationEnabled">
-                <ul *ngIf="pager.pages.length" class="pagination">
-                        <li [ngClass]="{disabled: pager.currentPage == 1}">
-                            <a (click)="pager.currentPage != 1 && !isModalShown && performSetPage(1)" >First</a>
-                        </li>
-                        <li [ngClass]="{disabled: pager.currentPage == 1}">
-                            <a (click)="pager.currentPage != 1 && !isModalShown && performSetPage(pager.currentPage - 1)">Previous</a>
-                        </li>
-                        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-                            <a (click)="!isModalShown && performSetPage(page)">{{page}}</a>
-                        </li>
-                        <li [ngClass]="{disabled: pager.currentPage == pager.totalPages}">
-                            <a (click)="pager.currentPage != pager.totalPages && !isModalShown && performSetPage(pager.currentPage + 1)">Next</a>
-                        </li>
-                        <li [ngClass]="{disabled: pager.currentPage == pager.totalPages}">
-                            <a (click)="pager.currentPage != pager.totalPages && !isModalShown && performSetPage(pager.totalPages)">Last</a>
-                        </li>
-                    </ul>
-            </div>
-        </div>
+      </div>
     </div>
-    </div>
+  </div>
 
 </div>
