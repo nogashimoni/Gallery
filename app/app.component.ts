@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
     selector: 'my-app',
     template: `<gallery
-    feedUrl = "https://s3.amazonaws.com/yotpo-public/images.json"
+    [feedUrl] = url
     [isSearchable] = isSearchable
     [isPaginationEnabled] = isPaginationEnabled
     [defaultResultsPerPage] = resultsPerPage
@@ -18,5 +18,6 @@ export class AppComponent {
     resultsPerPage: number = 1;
     rotateSeconds: number = 2;
     isSortable: boolean = true;
+    url: string = "https://s3.amazonaws.com/yotpo-public/images.json";
 
 }

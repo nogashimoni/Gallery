@@ -1,18 +1,40 @@
-import {Picture} from "./picture";
 /**
  * Created by nogalavi on 18/10/2016.
  */
 
+import {Picture} from "./picture";
+import {Injectable}     from '@angular/core';
+import {Http, Response, Headers, RequestOptions} from '@angular/http';
+import {Observable} from 'rxjs/Rx';
 
+// Import RxJs required methods
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+
+
+@Injectable()
 export class GetPicturesService {
+
+
+  constructor(private http: Http){}
+
+
+
+  getPictures(url: string) : Observable<Picture[]> {
+
+    return this.http.get(url)
+      .map((res:Response) => res.json())
+      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+
 
   /**
    * This function is used instead of http get function.
    * @return {Picture[]} mock pictures array
    */
 
-
-  getPictures (url: string) {
+  getMockPictures (url: string) {
     return [
       {
         "title": "Blue river (much better in original size - press)",

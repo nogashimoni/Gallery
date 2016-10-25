@@ -18,13 +18,14 @@ import {Picture} from "./picture";
 export class GalleryComponent {
 
     // Input variables
-    feedUrl:string;
+    feedUrl: string;
+    backupFeedUrl:string = "./app/assets/json/pictures.json";
     isSearchable:boolean = true;
     isPaginationEnabled:boolean = true;
     isSortable:boolean = true;
 
     defaultResultsPerPage:number = 10;
-    resultsPerPage:number = this.defaultResultsPerPage;
+    resultsPerPage:number;
     rotateSeconds:number = 4;
 
     pictures:Picture[];
@@ -53,18 +54,40 @@ export class GalleryComponent {
 
     pictureHooveredIndex: number;
 
+    isPicturesReceived: boolean = false;
 
-  constructor(getPicturesService:GetPicturesService, private pagerService:PagerService) {
-        //getPicturesService.getFeedFromUrl(this.feedUrl).subscribe( res => this.feed = res);
-        this.pictures = getPicturesService.getPictures(this.feedUrl);
-        this.relevantPictures = this.pictures.slice(0); // copy pictures array
-        let localStorageBlacklist = localStorage.getItem('blacklist');
-        this.blacklist = localStorageBlacklist ? JSON.parse(localStorageBlacklist) : {};
-    }
+
+  constructor(private getPicturesService:GetPicturesService, private pagerService:PagerService) {
+  }
 
 
     ngOnInit() {
-        this.updateRelevantData();
+      let localStorageBlacklist = localStorage.getItem('blacklist');
+      this.blacklist = localStorageBlacklist ? JSON.parse(localStorageBlacklist) : {};
+      this.resultsPerPage = this.defaultResultsPerPage;
+      this.loadPictures();
+    }
+
+
+    handleLoadPicturesError(error: any) {
+      console.log(error + "\n An error with the given url has occurred. Will load default images.");
+      this.feedUrl = this.backupFeedUrl;
+      this.loadPictures();
+      //this.updateRelevantData();
+    }
+
+
+    loadPictures() {
+      this.getPicturesService.getPictures(this.backupFeedUrl).subscribe(
+            (pictures) => {
+              this.isPicturesReceived = true;
+              this.pictures = pictures;
+              this.relevantPictures = this.pictures.slice(0); // copy pictures array
+              this.updateRelevantData();
+            }
+        //,
+            //(err) => {this.handleLoadPicturesError(err)}
+        );
     }
 
 
@@ -95,6 +118,7 @@ export class GalleryComponent {
 
 
     private updateRelevantData() {
+
         let notInBlacklist = (picture: Picture) => { return !this.blacklist[picture.id] };
         this.pictures = this.pictures.filter(notInBlacklist);
         this.relevantPictures = this.relevantPictures.filter(notInBlacklist);
@@ -129,7 +153,7 @@ export class GalleryComponent {
 
 
     performSearch(searchTerm: string) {
-        this.searchTerm = searchTerm;
+       this.searchTerm = searchTerm;
         if (this.searchTerm == "") {
             this.relevantPictures = this.pictures.slice(0) //copy pictures array;
         }
@@ -254,12 +278,12 @@ export class GalleryComponent {
     }
 
 
-    onPictureMouseover(hooveredIndex: number) {
+    onPictureMouseEnter(hooveredIndex: number) {
       this.pictureHooveredIndex = hooveredIndex;
     }
 
 
-    onPictureMouseleave() {
+    onPictureMouseLeave() {
       this.pictureHooveredIndex = -1;
     }
 

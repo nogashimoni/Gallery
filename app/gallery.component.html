@@ -3,7 +3,7 @@
 
 <div>
 
-    <div id="gallery">
+    <div id="gallery" *ngIf="isPicturesReceived">
 
       <!-- modal part -->
       <div *ngIf="isModalShown">
@@ -27,7 +27,7 @@
         <!-- present pictures -->
         <div class="row">
             <div class="col-lg-3 col-md-4 col-xs-6" *ngFor="let picture of picturesToPresent; let i = index">
-                <div class="imageAndButton" (mouseenter)='onPictureMouseover(i)' (mouseleave)='onPictureMouseleave()'>
+                <div class="imageAndButton" (mouseenter)='onPictureMouseEnter(i)' (mouseleave)='onPictureMouseLeave()'>
                   <img class="thumbImage" src= "{{ picture.url }}" title="{{picture.title}}" onerror="this.src='./app/assets/images/placeholder.png'" (click)="showBigImage(i+(currentPage-1)*resultsPerPage)" >
                   <button class="glyphicon glyphicon-trash" *ngIf="i==pictureHooveredIndex" (click) = performDeletePicture(picture.id) [disabled]="isModalShown" >  </button>
                 </div>
